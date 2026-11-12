@@ -1,6 +1,6 @@
 # Stack-specific checks (select only relevant)
 
-Use the core workflow for every language. These optional checks cover selected ecosystems, not every language or a ranking of stacks. Identify versions, runtime targets and configured commands from the affected project's manifests, lockfiles, build files and CI before choosing APIs or checks. In a monorepo, inspect the affected package as well as shared configuration.
+Read only sections implicated by the changed behavior. These are prompts for finding missed failure modes, not requirements to run every listed check. Resolve uncertain versions, runtime targets and commands from the affected project's configuration; inspect shared monorepo configuration when it influences that project.
 
 Combine the relevant language, framework/runtime and cross-cutting sections. For example, use PHP + Laravel, TypeScript + React, C# + .NET, or Java/Kotlin + Spring/JPA. For unlisted stacks, follow repository conventions and version-appropriate official documentation. Use configured tools; do not add dependencies merely to complete these checks.
 
@@ -94,7 +94,7 @@ Combine the relevant language, framework/runtime and cross-cutting sections. For
 ### SQL / PostgreSQL / SQL Server
 - Inspect schema, constraints, indexes and query plans as necessary; verify tenant/provider scope in every relevant access.
 - Use parameters; explicit transaction semantics; concurrency and isolation-aware tests.
-- For migration, gate approval and validate backward compatibility, default/nullability, index lock cost, data backfill and rollback limitations.
+- For migration, confirm execution authorization and validate backward compatibility, default/nullability, index lock cost, data backfill and rollback limitations.
 - Measure actual query workload before adding indexes.
 
 ### Distributed systems

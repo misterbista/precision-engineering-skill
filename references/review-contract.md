@@ -1,6 +1,8 @@
 # Review and approval contract
 
-## Review priorities, in order
+## Review priorities
+Inspect the affected behavior and its consumers. Use these priorities where applicable; do not audit unrelated subsystems or generate a finding for every category.
+
 1. Wrong behavior vs acceptance, missing negative or edge case.
 2. Authorization, tenant isolation, secret handling, injection and insecure defaults.
 3. Persistence consistency, transaction boundary, partial writes, retries/idempotency and data loss.
@@ -15,16 +17,17 @@
 - P0: immediate security/data-loss or consistently broken critical flow.
 - P1: significant production incorrectness or high-likelihood regression.
 - P2: bounded defect or material maintainability hazard with demonstrated impact.
-- P3: optional suggestion; never block for style preference.
-No claim of certainty beyond evidence; requests for evidence are not proven defects.
+- P3: low-impact, concrete defect.
+Trace each finding to an affected caller or reachable state. Separate unverified risks and requested suggestions from defects; style preferences are not blockers. No claim of certainty beyond evidence; requests for evidence are not proven defects.
 
-## Approval gates
-- **Must request explicit authorization:** destructive writes or drops, schema/data migration, authentication/authorization behavior, breaking public API, secrets/IAM, infrastructure deployment, dependency upgrade with risk, changes outside agreed scope.
-- **Design signoff if S2:** broad cross-module/cross-layer change, new architectural boundary, replacement of shared abstraction. If exact scope was already approved, proceed with it.
-- Approval record should capture exact scope, tested fallback, risks and rollback constraints. Approval of a plan does not authorize unrelated destructive commands.
+## Authorization boundaries
+- Honor existing authorization for the requested scope; high risk alone does not require asking again.
+- Resolve consequential ambiguity before dependent work. Prepare authorized patches and verification before asking for approval of a concrete operation.
+- Confirm missing authorization before destructive execution, live schema/data migration, deployment, breaking external transitions or work outside the agreed scope. Approval to prepare a migration does not authorize running it against production.
+- State the exact operation, evidence, risks and recovery limitations when approval is needed; do not claim a tested fallback unless tested.
 
 ## Independent review routing
-- Delegate read-only if tool supports separate agent, task is S2/S3, and independent judgment adds value.
+- Delegate read-only only when authorized, supported and independent judgment adds enough value to justify the cost. Risk labels alone do not require delegation.
 - Supply short brief: objective, invariants, touched files, diff, tests and known risks.
 - Ask for verified findings, not a score; do not blindly apply reviewer changes.
 - If no capability exists, do adversarial self-review and explicitly identify it as such.

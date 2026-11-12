@@ -1,6 +1,6 @@
-# Precision Engineering v1
+# Precision Engineering
 
-A portable Agent Skills package optimized for Codex, not a clone of pstack. It adds a single reusable evidence-first/reuse-first engineering workflow and opt-in references.
+A portable Agent Skills package for improving existing code with focused investigation, semantic reuse and verification matched to behavioral risk. The core skill loads for engineering work; supporting references and evaluation guidance are read only when needed.
 
 The core workflow applies across languages. Optional checks cover C#, PHP, Go, TypeScript, Java, Python, Rust, Kotlin and Swift; separate framework/runtime sections cover .NET, Laravel, React and Spring/JPA. Combine relevant sections, such as PHP + Laravel or TypeScript + React, with SQL and distributed systems checks where needed. These are engineering checklists, not stack-selection recommendations or exhaustive language coverage. Project versions, tooling and repository conventions determine which checks apply.
 
@@ -20,7 +20,7 @@ Repo-level alternative: place in `<repo>/.agents/skills/precision-engineering/` 
 ## Suggested tiny root AGENTS.md (manual, optional)
 
 ```md
-Follow repository code style and existing test commands. Reuse existing implementations before introducing new symbols. Never modify unrelated user changes. Treat auth, data, contracts, and infra as high-risk: request explicit approval before risky changes. Never claim tests pass without running them. Apply the `precision-engineering` skill for nontrivial implementation, bug fixes, refactors, migrations and reviews.
+Follow repository code style and existing test commands. Reuse existing implementations before introducing new symbols. Never modify unrelated user changes. Verify auth, data, contracts, and infra changes proportionally to risk; confirm missing authorization before destructive or live operations. Never claim tests pass without running them. Apply the `precision-engineering` skill for nontrivial implementation, bug fixes, refactors, migrations and reviews.
 ```
 
 Do not paste the full skill into AGENTS.md; that duplicates context. Keep repo-specific file locations, test commands, and architectural constraints in AGENTS.md.
@@ -28,6 +28,10 @@ Do not paste the full skill into AGENTS.md; that duplicates context. Keep repo-s
 ## Example
 
 `$precision-engineering Fix duplicate invoice submission for the same provider. Trace existing transaction and ownership logic, reuse it, propose a bounded patch, add a concurrent duplicate regression test, and show the diff and actual verification results.`
+
+## Evaluate changes to this skill
+
+[Evaluation guidance](evals/cases.md) describes comparison scenarios and scoring criteria. Measuring the skill's effect requires separate coding-agent runs with the same tasks, model and settings. Executable fixtures and test tooling are not bundled.
 
 ## Sources consulted (2026-11-12)
 - Poteto pstack: https://github.com/cursor/plugins/tree/main/pstack
