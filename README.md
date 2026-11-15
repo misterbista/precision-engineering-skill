@@ -8,7 +8,7 @@ For Codex usage efficiency, keep investigation targeted, reuse valid evidence, l
 
 Verification follows behavioral effect, not file extension or diff size: instructions, configuration and CI can change behavior or authority. Before checks with external effects, verify effective targets and isolation; disposable files do not isolate inherited credentials or service endpoints.
 
-The core workflow applies across languages. Optional checks cover C#, PHP, Go, TypeScript, Java, Python, Rust, Kotlin and Swift; separate framework/runtime sections cover .NET, Laravel, React and Spring/JPA. Combine relevant sections, such as PHP + Laravel or TypeScript + React, with SQL and distributed systems checks where needed. These are engineering checklists, not stack-selection recommendations or exhaustive language coverage. Project versions, tooling and repository conventions determine which checks apply.
+The core workflow applies across languages without bundled stack checklists. Derive stack-specific decisions and checks from the affected project's pinned versions, source, configuration and existing tests; consult version-matched official documentation only for unresolved questions.
 
 ## Install on macOS / Codex
 

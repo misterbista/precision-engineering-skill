@@ -56,5 +56,4 @@ Read only sections resolving a concrete concern, not a second routine workflow:
 
 - [Task playbooks](references/playbooks.md): task-specific risks.
 - [Review contract](references/review-contract.md): findings and approval boundaries.
-- [Stack checks](references/stack-checks.md): stack pitfalls; follow pinned versions.
 - [Evaluation cases](evals/cases.md): improving/evaluating this skill only.
