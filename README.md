@@ -2,6 +2,10 @@
 
 A portable Agent Skills package for improving existing code with focused investigation, semantic reuse and verification matched to behavioral risk. The core skill loads for engineering work; supporting references and evaluation guidance are read only when needed.
 
+The skill favors first-principles reasoning: fix invalid state at its source, trust enforced internal contracts, validate untrusted input at entry, and preserve local code style. Database origin alone does not guarantee non-null values or a matching row. Redundant consumer guards, silent defaults and speculative abstractions are not substitutes for correctness. Use non-deprecated APIs compatible with pinned versions, and prefer deterministic tooling over speculative reading when it can answer the question.
+
+For Codex usage efficiency, keep investigation targeted, reuse valid evidence, load references only for concrete concerns, default to one agent, and stop once acceptance and risk-appropriate checks are satisfied—even on higher-capability models. The skill does not change Codex usage limits; shorter instructions alone do not prove lower total usage. Preserve correctness checks rather than imposing arbitrary tool or token caps.
+
 The core workflow applies across languages. Optional checks cover C#, PHP, Go, TypeScript, Java, Python, Rust, Kotlin and Swift; separate framework/runtime sections cover .NET, Laravel, React and Spring/JPA. Combine relevant sections, such as PHP + Laravel or TypeScript + React, with SQL and distributed systems checks where needed. These are engineering checklists, not stack-selection recommendations or exhaustive language coverage. Project versions, tooling and repository conventions determine which checks apply.
 
 ## Install on macOS / Codex
@@ -33,7 +37,21 @@ Do not paste the full skill into AGENTS.md; that duplicates context. Keep repo-s
 
 [Evaluation guidance](evals/cases.md) describes comparison scenarios and scoring criteria. Measuring the skill's effect requires separate coding-agent runs with the same tasks, model and settings. Executable fixtures and test tooling are not bundled.
 
-## Sources consulted (2026-11-12)
+## Usage-efficiency research (November 2026)
+
+Public user reports identify practical failure modes, not controlled proof of savings:
+
+| Source | Incorporated practice |
+|---|---|
+| [User reporting RTK use with Codex](https://github.com/openai/codex/issues/19001) | Bound tool output and inspect relevant summaries; preserve full failure evidence. No wrapper dependency or claimed savings percentage. |
+| [Oversized observations and repeated retries](https://github.com/openai/codex/issues/48792) | Narrow reads, retain findings and reassess failed approaches instead of repeating unchanged observations. |
+| [Compaction visibility and lost constraints](https://github.com/openai/codex/issues/21468) | Compact handoffs preserve invariants, decisions, changed files and actual verification state. |
+| [Official best practices](https://learn.chatgpt.com/guides/best-practices) | One chat per coherent outcome; preserve continuity while iterating on the same problem. |
+| [Official skills guidance](https://learn.chatgpt.com/docs/build-skills) | Progressive disclosure: keep the core focused and load supporting material only when needed. |
+
+These sources were checked on 2026-11-15. User reports are anecdotal and version-specific; their advertised savings are not this skill's measured results. We do not adopt automatic session resets, blanket lower-reasoning settings or output filters that conceal failures. No Codex configuration or external tools are installed by these instructions.
+
+## Earlier sources consulted (2026-11-12)
 - Poteto pstack: https://github.com/cursor/plugins/tree/main/pstack
 - phthomas pstack: https://github.com/phthomas/pstack
 - Superpowers: https://github.com/obra/superpowers

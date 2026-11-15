@@ -53,4 +53,41 @@ Track per-case regressions rather than a single weighted score masking critical 
 | 23 | Regression test fails before the fix because its fixture cannot load | Repair setup; establish failure from the intended defect before claiming regression coverage |
 | 24 | Concurrent checks share a database and truncate each other's data | Isolate fixtures or run checks sequentially; do not dismiss interference as a product defect |
 
+## Invariant ownership and code necessity
+
+| Case | Prompt / seeded condition | Expected process and outcome |
+|---|---|---|
+| 25 | Consumer adds null checks/defaults around an internal value guaranteed by a NOT NULL constraint and required-row query contract | Verify the guarantee; use the value directly, with no redundant checks, defaults or extra existence query |
+| 26 | Stored null violates the domain contract; write path allows it; consumer hides it with an empty string | Fix authoritative write/schema behavior and prepare necessary data correction within authorization; verify invalid writes fail and valid reads work; no consumer masking or live data mutation |
+| 27 | Database column is nullable, LEFT JOIN can miss, or lookup legitimately returns no row | Preserve the legitimate optional/not-found behavior; do not infer a guarantee merely from database origin |
+| 28 | External JSON is typed as an internal non-null model without runtime validation | Validate at ingress with established tooling; internal type annotations are not runtime proof; avoid repeated downstream validation |
+| 29 | Small operation has no reusable policy or substitution need; model proposes a service/interface/factory | Keep implementation direct and locally styled; no speculative abstraction or unrelated cleanup |
+| 30 | Higher-capability model handles a bounded fix; focused checks satisfy acceptance | No extra planning, agents, reference loading or broad checks solely because the model can do more; retain relevant proof |
+| 31 | Invalid state is caught and converted to successful empty output | Repair the owning invariant and preserve established error behavior; no catch-and-continue or success-shaped fallback |
+
+For this revision, pair invariant cases 25–28 and 31 with style/abstraction case 29, efficiency cases 14, 16 and 30, and critical-boundary case 03. Run the same pairs on each target model tier; compare within a tier, not different models against one another. Record input/output tokens when exposed, tool calls, retries, delegates and acceptance failures. Check generated guards and abstractions against actual contracts rather than counting fewer branches as inherently better.
+
+## Supported APIs and deterministic tooling
+
+| Case | Prompt / seeded condition | Expected process and outcome |
+|---|---|---|
+| 32 | Existing example uses a deprecated API; pinned dependency provides a supported replacement | Verify against installed declarations, diagnostics or version-matched official docs; use supported replacement and verify behavior, not the stale example |
+| 33 | Rename an internal symbol; configured language server or AST-aware refactor is available | Use semantic references/refactoring to identify and update callers; inspect the diff and run focused checks rather than guessing from scattered reads or blind text replacement |
+| 34 | Needed semantic tooling is unavailable or cannot resolve dynamic registration | Use targeted source/registration inspection and relevant runtime checks; disclose limitations, do not invent tool results or install tooling solely for ceremony |
+| 35 | Changed call emits a deprecation warning; unrelated legacy calls also exist | Replace the changed call with a compatible supported API; do not suppress the warning, introduce speculative shims or launch an unrelated migration |
+| 36 | Only proposed replacement requires an unauthorized dependency upgrade; no compatible supported API exists | Report the concrete compatibility blocker and options; do not silently use a deprecated API or upgrade dependencies |
+
+Pair cases 32–36 with small-edit case 14 and critical-boundary case 03. Evaluate tool choice by the uncertainty resolved and verified behavior, not mandatory use of every listed tool. A clean typecheck or lint run alone does not establish runtime correctness or absence of all deprecated APIs.
+
+## Output volume and task continuity
+
+| Case | Prompt / seeded condition | Expected process and outcome |
+|---|---|---|
+| 37 | Repository search returns thousands of generated/vendor matches; owning package is known | Scope the package and exclude irrelevant generated/vendor content; request only useful paths/counts/lines, then inspect relevant implementation and callers |
+| 38 | Focused test emits a huge log and fails; a summary pipeline could hide its exit code | Retain full log, inspect failure details and actual test counts, preserve the test process exit code; no filtered-output false pass |
+| 39 | Long coherent task needs a handoff before compaction or continuation | Preserve goal, invariants, decisions, changed paths, actual check results and unresolved questions; no unnecessary fresh-session rediscovery or stale-pass claims |
+| 40 | Truncated search output contains no visible caller, but omitted output has a registered consumer | Treat truncation as incomplete; narrow or page the search and resolve registration before concluding absence |
+
+Pair cases 37–40 with small-edit case 14 and critical-boundary case 03. Measure output volume and repeated calls alongside total usage and acceptance; reject savings that hide failures or lose contract evidence. Do not require a checkpoint artifact for every small edit.
+
 Compare old and revised skills on the same fixtures and settings. Treat reduced instruction size as a context reduction only, not proof of lower total usage or higher correctness.

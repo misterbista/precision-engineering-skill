@@ -4,55 +4,53 @@ description: Implement, debug, review, refactor, optimize or migrate existing co
 ---
 # Precision Engineering
 
-Optimize for verified behavior per unit of effort. Choose the next action by the uncertainty it resolves; shorter instructions or smaller diffs alone do not establish quality.
+Maximize verified correctness per unit of effort. Reason from requirements, invariants and ownership. Choose the cheapest action that resolves a concrete uncertainty; capable models need no extra ceremony.
 
-## Establish the change
+## Scope and investigate
 
-- Read applicable repository guidance and working-tree status; distinguish your changes from existing edits and preserve unrelated work.
-- Identify the requested outcome and behavior that must remain unchanged. Keep this implicit for obvious edits; use a short plan only for coordinating dependent work. Review-only requests do not authorize edits.
-- Existing authorization persists. Prepare authorized patches and verification before seeking missing approval for a concrete operation. Resolve consequential ambiguity before dependent work; continue independent work. Preparing a migration does not authorize running it against live data.
+- Read applicable guidance and working-tree status; preserve unrelated edits. Identify the outcome and invariant behavior. Plan only when dependent work needs coordination.
+- Honor existing authorization; resolve consequential ambiguity before dependent work, continue independent work. Review-only means no edits; preparing migrations does not authorize live execution.
+- Target the owner, affected consumers, existing utilities and tests. Inspect configuration for uncertain commands/versions. Follow exports, registration and generated sources as relevant; absent direct callers does not prove code unused.
+- Prefer available deterministic tools—symbol/AST queries, compiler/typechecker diagnostics, linters, formatters, codemods and focused tests—over speculative reading when they resolve the question. Read source for semantics tools cannot establish.
+- Bound output at its source: scope paths/symbols and request only needed paths, counts or lines. Exclude generated/vendor noise unless implicated. For verbose checks, retain full logs and inspect summaries/failures; preserve exit codes and test counts. Truncated output is incomplete evidence.
+- Ground bugs in reproduction or trustworthy evidence. Disprove the leading hypothesis cheaply; revise it when contradicted. Tests may encode a bug. Broaden searches or read history only for a named unanswered question.
+- Edit once behavior, ownership, consumers and a useful check are clear. No exhaustive inventory.
 
-## Investigate just enough
+## Write only necessary code
 
-Use narrow symbol searches and targeted reads to find the owning implementation, affected consumers, reusable behavior and relevant tests. Inspect configuration when versions or commands are uncertain. Follow exports, registration and generated code when relevant; missing direct callers does not prove code is unused.
+- Fix the first incorrect state at its authoritative source, not downstream symptoms. For invalid stored data, repair the write path or schema constraint and prepare necessary data correction within scope; do not mask it at consumption. Fix generated behavior at its source and regenerate with established tooling.
+- Trust enforced internal contracts. Avoid redundant null/existence checks, defaults, repeated validation and catch-and-continue paths for impossible states. Database origin alone proves nothing: check nullability, query/join and not-found semantics when uncertain. Preserve legitimate optional states; validate untrusted input at entry. Surface invariant violations, not success-shaped fallbacks.
+- Reuse only when ownership, validation, state and failure semantics match. Prefer direct code over speculative wrappers, interfaces, services, dependencies or compatibility shims. Abstract for a concrete boundary or demonstrated reuse, not hypothetical flexibility.
+- Use non-deprecated APIs supported by pinned versions; verify uncertain status in installed declarations, diagnostics or version-matched official docs. Replace changed deprecated calls, not unrelated legacy code. Report incompatible alternatives instead of silently upgrading dependencies or suppressing warnings.
+- Follow local naming, layout, error handling and idioms. Characterize unclear behavior before refactoring. Include required consumer updates; exclude unrelated cleanup.
 
-For bugs, reproduce the failure or ground the diagnosis in trustworthy evidence. Tests and documentation describe existing expectations; resolve conflicts with the requested behavior rather than blindly preserving a bug. Choose the cheapest observation that can disprove the leading hypothesis. If evidence contradicts it, revise the hypothesis before patching again. Read history or broaden searches only for a concrete unanswered question.
+## Match proof to risk
 
-Start editing when evidence supports the intended behavior, owning boundary, affected consumers and a way to distinguish success from failure. Do not require exhaustive repository understanding.
+Use the nearest check that can expose failure, plus repository-required checks:
 
-## Make the smallest coherent change
-
-Search the affected area and established shared utilities before adding equivalent behavior. Reuse only when ownership, validation, state and failure semantics fit. A small new implementation is preferable to a misleading abstraction. Avoid speculative layers, dependencies and compatibility shims. Fix generated behavior at its source and regenerate through the established tooling.
-
-Fix the cause at its owning boundary and update affected consumers. Preserve unrelated behavior and local conventions. Characterize unclear behavior before refactoring. Separate required changes from optional cleanup.
-
-## Match proof to failure risk
-
-Choose the nearest verification layer that can detect the failure, plus repository-required checks:
-
-| Changed behavior | Useful evidence |
+| Change | Evidence |
 |---|---|
-| Text, style or mechanical change without behavioral risk | Inspect the result and diff; use existing checks when useful. No new tests or plan by default. |
-| Local logic | Focused behavior test covering the intended result and a plausible counterexample. For bugs, prefer failure from the original defect before the fix and success afterward. |
-| Shared contracts or cross-layer behavior | Relevant consumers and boundary tests. Compilation or mocked internals alone cannot prove runtime compatibility. |
-| Authorization, persistence, concurrency or external effects | Applicable ownership, isolation, atomicity, retries and recovery checks at the authoritative boundary. Verify valid operations still succeed as well as invalid operations fail. |
-| Performance | Comparable baseline and changed workloads, correctness checks and measurement variability. |
+| Text/style/mechanical, no behavioral risk | Inspect result and diff; existing checks when useful. No new tests by default. |
+| Local logic | Focused test of intended behavior and plausible counterexample; prefer defect-specific failure before fix, success after. |
+| Shared contract/cross-layer | Affected consumers and boundary tests; compilation/mocked internals alone cannot prove compatibility. |
+| Authorization/persistence/concurrency/external effects | Relevant ownership, isolation, atomicity, retries and recovery at the authoritative boundary; valid and invalid operations. |
+| Performance | Comparable baseline/changed workloads, correctness and measurement variability. |
 
-Check that intended tests actually ran against the current implementation. Empty selection, unrelated setup failures, skipped coverage and stale build output are not proof. Do not weaken assertions to hide a defect. Use disposable baselines when needed without disturbing working edits; call failures pre-existing only with evidence.
+Confirm intended tests ran against current code. Empty selections, setup failures, skips and stale outputs are not proof. Never weaken assertions or call failures pre-existing without evidence. Use disposable baselines without disturbing working edits.
 
-## Spend effort once; finish honestly
+## Spend once; finish honestly
 
-- Reuse discoveries and results while their inputs and assumptions remain valid. After edits, rerun affected checks; retain unrelated evidence. Batch independent reads. Parallelize checks only when fixtures, outputs and services cannot interfere.
-- Diagnose failures before retrying. Expand verification for changed scope, failures or unresolved risks; stop when acceptance and appropriate checks are satisfied.
-- Inspect changed-file status, your final diff and `git diff --check`, including new files omitted from the default diff. Challenge the result against acceptance and affected callers. Report unavailable checks and unresolved risks without calling them passes; separate implemented behavior from verified behavior.
-- Default to one agent. Use bounded delegation only when authorized and its independent judgment or saved context justifies the cost. Do not duplicate investigation or imply independent review from self-review.
-- Report the outcome, meaningful changes, verification and material limitations. Omit empty checklist fields and routine process narration. Never claim measured efficiency or correctness gains without comparative runs.
+- Batch independent reads; reuse valid discoveries/results. After edits rerun affected checks, not unrelated ones. Parallel checks must not share mutable fixtures. Diagnose before retrying; expand only for changed scope, failures or unresolved risk.
+- Default to one agent; delegate only when authorized and independent judgment or saved context justifies total cost. Do not duplicate investigation or claim self-review is independent.
+- At genuine task boundaries or before context loss, preserve a compact handoff: goal, invariants, decisions, changed paths, check results and unresolved questions. Keep coherent work in the same thread; do not reset merely to hide context growth.
+- Inspect final status, your diff, new files and `git diff --check` against acceptance and callers. Stop when acceptance and risk-appropriate checks are satisfied.
+- Report outcome, exact verification and material limitations concisely. Distinguish implemented from verified; omit routine narration. No measured correctness/efficiency claims without comparative runs.
 
 ## Conditional references
 
-Read only the section implicated by the changed behavior or an unresolved concern:
+Read only sections resolving a concrete concern, not a second routine workflow:
 
-- [Task playbooks](references/playbooks.md): deeper procedures for fixes, features, refactors, migrations, performance, incidents or reviews.
-- [Review contract](references/review-contract.md): grounded findings and authorization boundaries.
-- [Stack checks](references/stack-checks.md): language, framework or persistence pitfalls; follow pinned project versions.
-- [Evaluation cases](evals/cases.md): improving or evaluating this skill, never routine coding work.
+- [Task playbooks](references/playbooks.md): task-specific risks.
+- [Review contract](references/review-contract.md): findings and approval boundaries.
+- [Stack checks](references/stack-checks.md): stack pitfalls; follow pinned versions.
+- [Evaluation cases](evals/cases.md): improving/evaluating this skill only.
