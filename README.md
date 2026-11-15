@@ -6,6 +6,8 @@ The skill favors first-principles reasoning: fix invalid state at its source, tr
 
 For Codex usage efficiency, keep investigation targeted, reuse valid evidence, load references only for concrete concerns, default to one agent, and stop once acceptance and risk-appropriate checks are satisfied—even on higher-capability models. The skill does not change Codex usage limits; shorter instructions alone do not prove lower total usage. Preserve correctness checks rather than imposing arbitrary tool or token caps.
 
+Verification follows behavioral effect, not file extension or diff size: instructions, configuration and CI can change behavior or authority. Before checks with external effects, verify effective targets and isolation; disposable files do not isolate inherited credentials or service endpoints.
+
 The core workflow applies across languages. Optional checks cover C#, PHP, Go, TypeScript, Java, Python, Rust, Kotlin and Swift; separate framework/runtime sections cover .NET, Laravel, React and Spring/JPA. Combine relevant sections, such as PHP + Laravel or TypeScript + React, with SQL and distributed systems checks where needed. These are engineering checklists, not stack-selection recommendations or exhaustive language coverage. Project versions, tooling and repository conventions determine which checks apply.
 
 ## Install on macOS / Codex

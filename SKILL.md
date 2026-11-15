@@ -26,15 +26,18 @@ Maximize verified correctness per unit of effort. Reason from requirements, inva
 
 ## Match proof to risk
 
-Use the nearest check that can expose failure, plus repository-required checks:
+Classify risk by behavioral effect, not file extension or diff size. Instructions, configuration, CI and dependency changes can alter runtime behavior or authority. Use the nearest check that can expose failure, plus repository-required checks:
 
 | Change | Evidence |
 |---|---|
 | Text/style/mechanical, no behavioral risk | Inspect result and diff; existing checks when useful. No new tests by default. |
+| Instructions/configuration/CI/dependencies | Check affected behavior, consumers and permissions using the applicable rows below; syntax or link checks alone do not prove behavioral correctness. For this skill, use the evaluation guidance. |
 | Local logic | Focused test of intended behavior and plausible counterexample; prefer defect-specific failure before fix, success after. |
 | Shared contract/cross-layer | Affected consumers and boundary tests; compilation/mocked internals alone cannot prove compatibility. |
 | Authorization/persistence/concurrency/external effects | Relevant ownership, isolation, atomicity, retries and recovery at the authoritative boundary; valid and invalid operations. |
 | Performance | Comparable baseline/changed workloads, correctness and measurement variability. |
+
+Before checks with external effects, verify effective service/data targets and isolation. Disposable checkouts do not isolate inherited credentials or endpoints. Use authorized non-live fixtures; if unavailable, run safe checks and disclose the blocked boundary.
 
 Confirm intended tests ran against current code. Empty selections, setup failures, skips and stale outputs are not proof. Never weaken assertions or call failures pre-existing without evidence. Use disposable baselines without disturbing working edits.
 

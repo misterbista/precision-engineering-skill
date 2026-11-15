@@ -9,6 +9,8 @@ Use the matching procedure to resolve a task-specific risk; it does not add a se
 4. Repair at the owning boundary, not a downstream symptom; review sibling paths.
 5. Run targeted and adjacent regression tests; confirm the original reproduction is fixed and a nearby valid case still works. Check test selection and skipped-test output.
 
+Before a reproduction or check can mutate external state, verify its effective target and isolation; a disposable checkout can still inherit live credentials, service endpoints or shared fixtures. Use a safe target within authorization, or report the blocked check.
+
 ## New feature
 1. Define user-visible outcome and negative/edge cases.
 2. Locate similar feature, route, API and tests; reuse established patterns.
