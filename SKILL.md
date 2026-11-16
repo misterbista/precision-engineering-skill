@@ -4,7 +4,7 @@ description: Implement, debug, review, refactor, optimize or migrate existing co
 ---
 # Precision Engineering
 
-Maximize verified correctness per unit of effort. Reason from requirements, invariants and ownership. Choose the cheapest action that resolves the highest-impact uncertainty. More activity is not more proof.
+Make the requested behavior correct with the least unnecessary change. Reason from requirements, invariants and ownership; choose the cheapest action that resolves the highest-impact uncertainty. These are decision rules, not a checklist to narrate or artifacts to create. More activity is not more proof.
 
 ## Scope and investigate
 
@@ -21,9 +21,9 @@ Maximize verified correctness per unit of effort. Reason from requirements, inva
 
 - Default to the smallest cohesive patch that satisfies the request and preserves surrounding contracts. For a local defect, edit the existing path in place; do not rewrite the module, reorganize files, rename unrelated symbols or reformat untouched code. Include necessary caller/schema changes when the contract requires them: small means bounded scope, not fewer lines at the expense of correctness or readability.
 - Require a concrete reason for each added branch, helper, abstraction, dependency or configuration option: a requested behavior, a demonstrated failure or an existing contract the patch must preserve. If the existing path can express the fix clearly, change it rather than adding a parallel mechanism. Do not add code merely for completeness, symmetry, future flexibility or to make the patch look substantial. A deletion or no code change can be the correct outcome.
-- Fix the first incorrect state at its authoritative source, not downstream symptoms. For invalid stored data, repair the write path or schema constraint and prepare necessary data correction within scope; do not mask it at consumption. Fix generated behavior at its source and regenerate with established tooling.
+- Fix the first incorrect state at the owning boundary within scope, not downstream symptoms. If the producer is external or cannot be changed within authorization, handle its documented or observed failure at the nearest owned boundary and disclose the upstream limitation; do not invent a successful result. For invalid stored data, repair the write path or schema constraint and prepare necessary data correction within scope. Fix generated behavior at its source and regenerate with established tooling.
 - Trust enforced internal contracts, not names, type assertions or happy-path tests alone. Avoid redundant null/existence checks, defaults, repeated validation and catch-and-continue paths for impossible states. Database origin alone proves nothing: check nullability, query/join and not-found semantics when uncertain. Preserve legitimate optional states; validate untrusted input at entry. Surface invariant violations, not success-shaped fallbacks.
-- Reuse only when ownership, validation, state and failure semantics match. Prefer direct code over speculative wrappers, interfaces, services, dependencies or compatibility shims. Abstract for a concrete boundary or demonstrated reuse, not hypothetical flexibility.
+- Reuse only when ownership, validation, state and failure semantics match and the dependency direction fits the architecture. Do not couple unrelated domains or widen a shared helper with flags just to avoid a few repeated lines. Prefer direct code over speculative wrappers, interfaces, services, dependencies or compatibility shims. Abstract for a concrete boundary or demonstrated shared policy, not similar syntax or hypothetical flexibility.
 - Use non-deprecated APIs supported by pinned versions; verify uncertain status in installed declarations, diagnostics or version-matched official docs. Replace changed deprecated calls, not unrelated legacy code. Report incompatible alternatives instead of silently upgrading dependencies or suppressing warnings.
 - Follow local naming, layout, error handling and idioms. Characterize unclear behavior before refactoring. Include required consumer updates; exclude unrelated cleanup.
 
@@ -42,7 +42,9 @@ Classify risk by behavioral effect, not file extension or diff size. Instruction
 
 Before checks with external effects, verify effective service/data targets and isolation. Disposable checkouts do not isolate inherited credentials or endpoints. Use authorized non-live fixtures; if unavailable, run safe checks and disclose the blocked boundary.
 
-Confirm intended tests ran against current code. Empty selections, setup failures, skips and stale outputs are not proof. Never weaken assertions or call failures pre-existing without evidence. Use disposable baselines without disturbing working edits. If required proof is unavailable, complete safe independent work and report the exact unverified boundary; do not invent a pass or broaden the patch to compensate.
+Test observable contracts through existing test seams. Do not export internals, add production mode flags or introduce a framework solely to make a test convenient; any necessary testability refactor must also preserve a coherent production boundary. Prefer assertions on outcomes over incidental call order or private structure, except when those interactions are the contract.
+
+Confirm intended tests ran against current code. Empty selections, setup failures, skips and stale outputs are not proof. Update assertions only when justified by the requested behavior or evidence that they encode incorrect or incidental behavior; retain coverage of the actual contract and never weaken checks merely to pass. Do not call failures pre-existing without evidence. Use disposable baselines without disturbing working edits. If required proof is unavailable, complete safe independent work and report the exact unverified boundary; do not invent a pass or broaden the patch to compensate.
 
 ## Spend once; finish honestly
 

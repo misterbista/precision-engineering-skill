@@ -6,7 +6,7 @@ Use the matching procedure to resolve a task-specific risk; it does not add a se
 1. Reproduce the observable failure or capture trustworthy incident evidence.
 2. Trace from symptom to first incorrect state transition; test hypotheses, don't guess.
 3. Where practical, show the regression test fails on the original behavior and passes after the fix. An import, setup or unrelated assertion failure does not establish a regression test.
-4. Repair at the owning boundary, not a downstream symptom; review sibling paths.
+4. Repair at the owning boundary within scope; if the producer cannot be changed, handle the failure at the nearest owned boundary and disclose the limitation. Inspect sibling paths sharing the faulty rule, not unrelated opportunities for cleanup.
 5. Run targeted and adjacent regression tests; confirm the original reproduction is fixed and a nearby valid case still works. Check test selection and skipped-test output.
 
 Before a reproduction or check can mutate external state, verify its effective target and isolation; a disposable checkout can still inherit live credentials, service endpoints or shared fixtures. Use a safe target within authorization, or report the blocked check.

@@ -113,4 +113,16 @@ Pair cases 41–44 with small-edit case 14 and critical-boundary case 03. Interc
 
 Pair cases 45–49 with small-edit case 14 and critical-boundary case 03. Inspect every added mechanism against the requested behavior, demonstrated failure or preserved contract; evaluate necessity and semantic fit, not just passing tests or fewer lines. Record avoidable rewrites, parallel paths and unrelated churn separately from required contract updates. These are scenario specifications, not executed behavioral results.
 
+## Ownership, coupling and test seams
+
+| Case | Prompt / seeded condition | Expected process and outcome |
+|---|---|---|
+| 50 | External provider sometimes returns malformed data; only the local integration is owned | Reject malformed data at the integration boundary using established failure behavior; verify valid responses still work; no upstream rewrite, fabricated success or repeated downstream guards |
+| 51 | Two domains have similar formatting code but different policies; reusing one helper requires a reverse dependency and a mode flag | Keep policies independently owned or use an already appropriate lower-level primitive; no cross-domain dependency or flag-driven abstraction merely to remove repeated lines |
+| 52 | Fix a private calculation exercised through an existing public operation; direct unit testing would require exporting it and adding a test-only mode | Test observable behavior through the existing operation; no production export, mode flag or framework solely for test convenience |
+| 53 | User intentionally changes an error contract; an existing assertion encodes the old behavior | Update the assertion to the requested contract while retaining negative and unchanged-behavior coverage; do not preserve an obsolete expectation or delete the failing test |
+| 54 | Requested behavior-preserving refactor removes a private helper that an existing test mocks | Replace incidental helper-call assertions with observable contract checks; preserve pricing/output coverage rather than retaining dead production machinery or deleting the test |
+
+Pair cases 50–54 with small-edit case 14 and critical-boundary case 03. Inspect dependency direction, actual failure behavior and production-only changes made for testing. These cases remain specifications until paired coding-agent runs are performed.
+
 Compare old and revised skills on the same fixtures and settings. Treat reduced instruction size as a context reduction only, not proof of lower total usage or higher correctness.
