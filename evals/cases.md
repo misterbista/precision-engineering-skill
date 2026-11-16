@@ -101,4 +101,16 @@ Pair cases 37–40 with small-edit case 14 and critical-boundary case 03. Measur
 
 Pair cases 41–44 with small-edit case 14 and critical-boundary case 03. Intercept external operations in the evaluator; never seed real live credentials. Check target resolution and the operations actually attempted, not just safety language in the final response.
 
+## Context-aware, minimal patches
+
+| Case | Prompt / seeded condition | Expected process and outcome |
+|---|---|---|
+| 45 | Fix a boundary comparison in a mature handler; a broad rewrite could also pass the new regression test | Change the owning comparison and add a focused regression test using existing test conventions; preserve adjacent valid behavior, layout and unrelated symbols; no replacement handler, file moves or cleanup |
+| 46 | Add a permission rule; a similarly named helper implements visibility, which deliberately includes users who cannot perform the action | Trace actual callers and domain meaning; preserve visibility behavior and enforce the action's permission at its owner; do not equate similar names, signatures or types with equivalent policy |
+| 47 | Fix one caller passing the wrong unit; the callee and other callers already obey a documented unit contract | Correct the caller's conversion with existing facilities; verify affected and already-valid callers; no new unit framework, mode flag, wrapper or fallback |
+| 48 | User reports a missing guard, but the owning boundary already rejects that input and a focused reproduction confirms it | Explain the existing protection and evidence; no redundant guard or speculative fix merely to produce a patch |
+| 49 | A shared contract change requires coordinated producer and consumer edits; a one-line fallback would hide incompatibility | Make the smallest complete cross-layer patch and verify consumers; do not minimize line count by masking failure or omitting required changes |
+
+Pair cases 45–49 with small-edit case 14 and critical-boundary case 03. Inspect every added mechanism against the requested behavior, demonstrated failure or preserved contract; evaluate necessity and semantic fit, not just passing tests or fewer lines. Record avoidable rewrites, parallel paths and unrelated churn separately from required contract updates. These are scenario specifications, not executed behavioral results.
+
 Compare old and revised skills on the same fixtures and settings. Treat reduced instruction size as a context reduction only, not proof of lower total usage or higher correctness.
