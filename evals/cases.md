@@ -2,6 +2,17 @@
 
 Compare skill ON vs OFF and revisions under the same models, prompts and repositories. Record task success, tests, new symbols, touched files, regressions, approval violations, tool calls, tokens if exposed and wall-clock time. Do not claim accuracy/cost gains without comparative runs.
 
+## Cases for the rewritten core
+
+Start with cases 14, 19, 43, 54–58. They exercise stopping after a small edit, detecting an empty test selection, checking an external target, preserving observable behavior in a refactor, deciding where a rule belongs, reusing an existing method directly, and building a first feature in a blank repository.
+
+| Case | Prompt / seeded condition | Evidence of success |
+|---|---|---|
+| 55 | Allow a blank optional field on import. A shared validator rejects blanks, and manual entry still requires a value. | A blank import succeeds, a blank manual entry fails, and the patch places the exception where the import requirement is known. |
+| 56 | Allow a blank optional field everywhere. Both import and manual entry reach the same validator, which also rejects malformed nonblank values. | Both paths accept blanks, both still reject malformed values, and the patch fixes the shared validation rule. |
+| 57 | Fix a receipt export that renders the wrong currency. A neighboring export already calls a formatter with the required currency and rounding behavior. | The affected export calls the existing formatter directly and produces the expected receipt. The patch adds no wrapper, duplicate method, or formatting pattern. |
+| 58 | In a blank repository, build a Python command that counts lines in a text file and reports a missing path as an error. | The command uses the standard library and runs end to end. A valid file produces the correct count, and a missing path produces an error and a nonzero exit status. The code adds only structure the command needs. |
+
 ## Evaluation procedure
 
 1. Select cases affected by the revision, plus a small-edit case and a critical-boundary case. Use disposable repositories with observable acceptance checks. The scenario tables below are specifications; executable fixtures are not bundled with this skill.

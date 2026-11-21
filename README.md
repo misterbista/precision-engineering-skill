@@ -1,14 +1,8 @@
 # Precision Engineering
 
-A portable Agent Skills package for improving existing code with focused investigation, semantic reuse and verification matched to behavioral risk. The core skill loads for engineering work; supporting references and evaluation guidance are read only when needed.
+A portable Agent Skills package for building new projects and features, and changing or reviewing existing code. It starts with one question. **What must be true for this change to be correct?** Use the answer to find where the behavior belongs, reuse the existing method or pattern whenever it meets the requirement, and choose a check that could expose a mistake.
 
-The skill favors first-principles reasoning: understand the surrounding domain behavior before editing, make the smallest cohesive fix and justify each addition against a concrete requirement or contract. Prefer editing the existing path over parallel mechanisms or broad rewrites; small diffs must still preserve correctness and readability. Fix invalid state at its owned source; when the producer cannot be changed, handle failure explicitly at the nearest owned boundary. Reuse must respect dependency direction and shared policy, not just similar syntax. Test observable contracts through existing seams rather than adding test-only production scaffolding. Trust enforced internal contracts, validate untrusted input at entry, and preserve local code style. Database origin alone does not guarantee non-null values or a matching row. Redundant consumer guards, silent defaults and speculative abstractions are not substitutes for correctness. Use non-deprecated APIs compatible with pinned versions, and prefer deterministic tooling over speculative reading when it can answer the question.
-
-For Codex usage efficiency, keep investigation targeted, reuse valid evidence, load references only for concrete concerns, default to one agent, and stop once acceptance and risk-appropriate checks are satisfied—even on higher-capability models. The skill does not change Codex usage limits; shorter instructions alone do not prove lower total usage. Preserve correctness checks rather than imposing arbitrary tool or token caps.
-
-Verification follows behavioral effect, not file extension or diff size: instructions, configuration and CI can change behavior or authority. Before checks with external effects, verify effective targets and isolation; disposable files do not isolate inherited credentials or service endpoints.
-
-The core workflow applies across languages without bundled stack checklists. Derive stack-specific decisions and checks from the affected project's pinned versions, source, configuration and existing tests; consult version-matched official documentation only for unresolved questions.
+The depth of investigation and verification follows the behavior at risk. A local label change may need only inspection and a focused check. A shared validation change may need checks through several callers, including a caller whose existing behavior must hold.
 
 ## Install on macOS / Codex
 
@@ -33,17 +27,17 @@ Do not paste the full skill into AGENTS.md; that duplicates context. Keep repo-s
 
 ## Example
 
-`$precision-engineering Fix duplicate invoice submission for the same provider. Trace existing transaction and ownership logic, reuse it, propose a bounded patch, add a concurrent duplicate regression test, and show the diff and actual verification results.`
+`$precision-engineering Fix duplicate invoice submission when two requests for the same provider and invoice arrive at once. Submissions for distinct invoices must still succeed.`
 
 ## Evaluate changes to this skill
 
 [Evaluation guidance](evals/cases.md) describes comparison scenarios and scoring criteria. Measuring the skill's effect requires separate coding-agent runs with the same tasks, model and settings. Executable fixtures and test tooling are not bundled.
 
-## Usage-efficiency research (November 2026)
+## Background research (November 2026)
 
 Public user reports identify practical failure modes, not controlled proof of savings:
 
-| Source | Incorporated practice |
+| Source | Practice |
 |---|---|
 | [User reporting RTK use with Codex](https://github.com/openai/codex/issues/19001) | Bound tool output and inspect relevant summaries; preserve full failure evidence. No wrapper dependency or claimed savings percentage. |
 | [Oversized observations and repeated retries](https://github.com/openai/codex/issues/48792) | Narrow reads, retain findings and reassess failed approaches instead of repeating unchanged observations. |
