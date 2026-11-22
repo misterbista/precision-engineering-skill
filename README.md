@@ -1,6 +1,6 @@
 # Precision Engineering
 
-A portable Agent Skills package for building new projects and features, and changing or reviewing existing code. It starts with one question. **What must be true for this change to be correct?** Use the answer to find where the behavior belongs, reuse the existing method or pattern whenever it meets the requirement, and choose a check that could expose a mistake.
+A portable Agent Skills package for building, debugging, refactoring, optimizing, migrating, and reviewing code. Start with the required behavior and trace the mechanism that controls it. Decide whether deletion, configuration, reuse, extension, or composition can solve it before adding a new concept. Verify unfamiliar APIs against the installed version and choose checks that could expose a mistake.
 
 The depth of investigation and verification follows the behavior at risk. A local label change may need only inspection and a focused check. A shared validation change may need checks through several callers, including a caller whose existing behavior must hold.
 
@@ -31,7 +31,7 @@ Do not paste the full skill into AGENTS.md; that duplicates context. Keep repo-s
 
 ## Evaluate changes to this skill
 
-[The manual evaluation guide](evals/README.md) gives exact prompts, fixture setup, and scoring criteria for comparing skill instructions ON and OFF or comparing revisions. [The case catalog](evals/cases.md) lists additional scenarios.
+[The manual evaluation guide](evals/README.md) gives exact prompts, fixture setup, and scoring criteria for comparing skill instructions ON and OFF or comparing revisions. [The case catalog](evals/cases.md) adds scenarios for supported UI APIs, justified reuse and extraction, performance evidence, and revising a plan when evidence changes.
 
 ## Background research (November 2026)
 

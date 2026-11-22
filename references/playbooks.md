@@ -1,6 +1,6 @@
 # Task playbooks (load only relevant section)
 
-Use the matching procedure to resolve a task-specific risk; it does not add a second mandatory workflow. Select checks that could reveal a defect in the changed behavior.
+Use the relevant section to choose checks that can expose a task-specific failure.
 
 ## Bug fix
 1. Reproduce the observable failure or capture trustworthy incident evidence.
@@ -18,6 +18,11 @@ Before a reproduction or check can mutate external state, verify its effective t
 4. Implement one working vertical slice; avoid broad scaffolding.
 5. Verify acceptance end-to-end and failures, not merely compilation.
 
+## UI
+
+- Inspect consumers of the shared component for behavior, accessible states, and styling conventions. Read the component API for the resolved version. An old call site can document usage while relying on a deprecated property.
+- Exercise the requested interaction and verify that existing consumers still render and behave as expected. Verify keyboard interaction and accessible labeling when the change affects them.
+
 ## Refactor
 1. Identify the requested structural improvement and invariant behavior.
 2. Characterize behavior first; separate mechanical moves from semantic changes.
@@ -32,11 +37,10 @@ Before a reproduction or check can mutate external state, verify its effective t
 5. Never claim rollback possible if destructive migration makes it impossible.
 
 ## Performance
-1. Establish baseline and workload, variability, SLO and resources.
-2. Profile bottleneck before choosing optimization. Explain algorithmic and operational tradeoffs.
-3. Change one variable at a time; test correctness as well as speed.
-4. Compare repeatable before/after runs including latency distributions and resource usage.
-5. Do not claim an improvement within measurement noise. Revise or remove your unsupported optimization, preserving unrelated work; disclose deliberate tradeoffs.
+1. Choose the metric that represents the problem. Capture a repeatable workload and enough baseline runs to see variability. Include latency distribution, throughput, allocations, responsiveness, or resource use as relevant.
+2. Locate the bottleneck with measurements. Check whether an algorithm, query, data layout, or I/O change addresses it directly. If caching fits the measured workload, account for invalidation, consistency, and memory limits.
+3. Control meaningful variables for before-and-after runs and check behavior under the same conditions. Measure costs that may have moved, such as memory or the first uncached request.
+4. Report the workload, environment, observed change, and tradeoffs. Treat changes within run-to-run noise as inconclusive and keep production claims within the measured scope.
 
 ## Incident / distributed concurrency
 1. Capture reproducible timeline, ownership, message IDs and state transitions.

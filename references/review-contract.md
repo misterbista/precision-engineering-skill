@@ -7,8 +7,8 @@ Inspect the affected behavior and its consumers. Use these priorities where appl
 2. Authorization, tenant isolation, secret handling, injection and insecure defaults.
 3. Persistence consistency, transaction boundary, partial writes, retries/idempotency and data loss.
 4. Race conditions, cancellation, resource lifecycle and timeouts.
-5. Compatibility and dependent callers: API/schema/message/serialization contracts.
-6. Reuse accuracy: duplicate methods/components/hooks/services; wrong ownership; unnecessary abstractions.
+5. Compatibility and dependent callers, including support in the resolved dependency version and API, schema, message, and serialization contracts.
+6. Reuse and readability. Look for parallel implementations, forced reuse across ownership boundaries, and extra symbols or extraction with no concrete purpose.
 7. Tests that assert mocks but not observable behavior; inadequate failure coverage.
 8. Unrelated edits and style divergence.
 

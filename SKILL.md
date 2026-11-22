@@ -1,34 +1,40 @@
 ---
 name: precision-engineering
-description: Build new projects and features, or debug, review, refactor, optimize, or migrate existing code. Use established implementations and patterns, preserve caller contracts, and verify observable behavior.
+description: Build new projects and features, or debug, review, refactor, optimize, or migrate existing code. Trace the mechanism, reuse compatible implementations, keep code straightforward, and verify observable behavior.
 ---
 
 # Precision Engineering
 
-Ask **what must be true for this change to be correct?** Identify the outcome the user wants, the behavior affected callers rely on, and what evidence would establish both. Let those answers set the scope of the work.
+Ask what must change, what must still hold, and what evidence could prove you wrong. Choose the simplest design that meets the required behavior and actual performance needs. Scale the investigation and checks to the contracts and failure paths affected.
 
-## Find where the behavior is decided
+## Establish the goal and trace the behavior
 
-Start at the entry point people or systems actually use. Check repository guidance and the working tree before editing. Follow the path to the code, data, or configuration that decides the outcome. Read affected callers and nearby tests where they can establish the contract or reveal an exception. Check how a guarantee is enforced before relying on it.
+Read repository guidance and check the working tree before making edits. Identify the observable outcome, existing guarantees, and evidence of success. Resolve ambiguity from available evidence first. State a low-risk assumption and proceed when appropriate. Ask when an unresolved choice would materially change behavior, scope, or risk. Proceed with authorized work and confirm missing authorization for consequential operations.
 
-For a new project without local conventions, use standard library facilities and follow the chosen framework's conventions where applicable. Build the smallest end-to-end version that meets a real requirement, and verify it through its intended entry point. Add abstractions only when a concrete requirement calls for them.
+Start at the actual entry point, failing behavior, or measured slow path. Follow the relevant data flow and state changes to their owners. Inspect affected callers, tests, types, configuration, and runtime registrations as needed. Check where a guarantee is enforced before relying on it. Expand the search when another dependency could change the decision. A shared contract, persistent state, or concurrent path warrants more investigation than a local edit.
 
-## Change the owning boundary
+## Explain the mechanism and choose the change
 
-Fix a shared rule at its source when it is wrong for every caller. When callers have different requirements, put each policy where that requirement is known. If the source is outside your control, handle invalid input or failure at the nearest boundary you own.
+For a bug, reproduce it where feasible. Separate observations from hypotheses and use the cheapest check that distinguishes plausible causes. Report when reproduction is unavailable. For a feature, locate the behavior and state owners, affected contracts, and meaningful failure paths. For performance, define the metric and representative workload, establish a baseline, and measure where time or resources go before selecting an optimization. Treat an unmeasured improvement as a hypothesis. Revisit the explanation and scope when evidence contradicts them. Resolve conflicts between the request and an established invariant before making a dependent change.
 
-**Reuse is required.** Before introducing a method, helper, wrapper, abstraction, or pattern, check the owning code and comparable callers for an existing solution. Call an existing method directly when it satisfies the contract and fits the dependency direction. Extend the owning implementation in place when it can cover the new requirement and preserve the behavior other callers rely on. Follow established local patterns for any necessary new code. Introduce a new method or pattern only when the existing options cannot safely meet the requirement.
+Fix a shared rule at its source when the rule itself is wrong. Put exceptions where their requirements are known. Handle invalid input or failure from an unowned producer at the nearest owned boundary. Consider deletion, simplification, or existing configuration before adding a mechanism.
 
-Keep the patch as small as the complete behavioral change allows and preserve unrelated edits.
+Inspect plausible existing implementations and their consumers before adding code or dependencies. Reuse directly when semantics and dependency direction fit. Extend the owner in place when the new requirement belongs there and other callers' contracts hold. Compose existing pieces when their responsibilities should remain independent. Add a new implementation when those options cannot meet the requirement cleanly. Keep responsibilities cohesive and explain consequential choices briefly.
 
-For example, if an import rejects a blank field, check where that field may be blank. If only imports permit it, handle the policy at the import boundary and verify that a caller requiring a value still rejects a blank one.
+## Implement straightforward code
 
-## Choose a check that could prove you wrong
+Follow local conventions and keep the change as small as the complete behavior allows. Preserve unrelated edits. In a new project, start with standard library facilities and framework conventions and build a working end-to-end slice. Keep control flow, state changes, and errors visible. Extract a meaningful operation or responsibility, or remove real duplication. Keep cohesive logic together when extraction would only add navigation. Apply size limits only when the repository requires them. Give each new abstraction, dependency, flag, public surface, cache, retry, or fallback a concrete purpose tied to the requirement or evidence.
 
-Exercise the changed behavior through an existing entry point and cover a plausible regression. For a bug, verify the failing case and an adjacent case that should still work. For a refactor, compare observable behavior. For a migration, exercise representative existing data and realistic interruption or retry paths. Establish a comparable baseline before claiming a performance gain.
+For unfamiliar or potentially deprecated APIs, confirm the resolved version and check installed declarations, diagnostics, or version-matched official documentation. For UI changes, inspect existing shared components and their supported APIs, styling, and accessibility conventions. Prefer a supported API that fits the installed version. Surface a concrete blocker if the only supported option requires an out-of-scope upgrade. Recheck when the relevant version changes.
 
-Run focused and repository-required checks against the final change. Confirm the intended checks actually ran and passed. Before any check with external effects, confirm the effective target is authorized and isolated where needed.
+## Verify behavior and inspect the diff
 
-## Stop once the evidence is sufficient
+Check the final change through its intended entry point. For a bug, exercise the failure and a nearby valid case. For a feature, check meaningful failures and affected contracts. For a refactor, compare observable behavior. For a migration, exercise representative existing data and relevant interruption or retry paths. For performance, compare equivalent workloads before and after and check correctness and where costs land. Use existing test seams and add coverage where it can expose a regression the existing checks miss. Run focused and required checks and confirm the intended cases actually ran and passed. Confirm the effective target is authorized and isolated where needed before running anything with external effects.
 
-Keep investigating while an unresolved question could change the fix or the verification it needs. In a review, report actionable findings with the affected behavior, the conditions that trigger it, and the supporting evidence. Finish with the outcome, the checks you actually ran, and any material gap in verification.
+Inspect the final diff for duplicate behavior, unnecessary symbols or extraction, unsupported API calls, weakened error handling, and scope creep. Remove additions that lack a concrete purpose and rerun affected checks after edits. In a review, report actionable findings with their trigger, impact, and evidence. Finish with the outcome, checks run, and material limits.
+
+## Keep the work proportional
+
+Search narrowly, bound output without losing failure evidence, and batch independent reads where useful. Keep dependent edits and checks ordered. Reuse established findings. If continuity needs a note, keep it temporary and record the goal, invariants, relevant paths, decisions, version facts, checks, and unresolved questions. Stop investigating when further evidence would not change the fix or its verification. Delegate only when allowed and when distinct work justifies the cost.
+
+Load the relevant section of the [task playbooks](references/playbooks.md) for specialist checks. Use the [review and approval contract](references/review-contract.md) for findings or consequential authorization decisions.
