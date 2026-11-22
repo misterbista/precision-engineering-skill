@@ -31,7 +31,7 @@ Do not paste the full skill into AGENTS.md; that duplicates context. Keep repo-s
 
 ## Evaluate changes to this skill
 
-[Evaluation guidance](evals/cases.md) describes comparison scenarios and scoring criteria. Measuring the skill's effect requires separate coding-agent runs with the same tasks, model and settings. Executable fixtures and test tooling are not bundled.
+[The manual evaluation guide](evals/README.md) gives exact prompts, fixture setup, and scoring criteria for comparing skill instructions ON and OFF or comparing revisions. [The case catalog](evals/cases.md) lists additional scenarios.
 
 ## Background research (November 2026)
 
